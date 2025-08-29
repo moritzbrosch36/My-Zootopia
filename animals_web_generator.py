@@ -1,11 +1,26 @@
 import json
 
 def load_data(file_path):
-    """Loads a JSON file."""
+    """
+    Load a JSON file and return its data as a Python object.
+
+    Args:
+        file_path (str): Path to the JSON file.
+
+    Returns:
+        list[dict]: List of animal dictionaries.
+    """
     with open(file_path, "r") as handle:
         return json.load(handle)
 
 
+# Main program
+"""
+Load animal data from 'animals_data.json', generate an HTML card 
+(<li class="cards__item">) for each animal, and save the complete HTML 
+page to 'animals.html'. Each card includes Name, Diet, Type, and Locations
+(if available).
+"""
 animal_data = load_data("animals_data.json")
 
 
@@ -92,7 +107,7 @@ for data in animal_data:
     html_output += f'<h2 class="card__title">{info["Name"]}</h2>\n'
     html_output += '<div class="card__text">\n'
     for key, value in info.items():
-        if key != "Name" and value is not None:  # Name schon als Titel oben
+        if key != "Name" and value is not None:
             html_output += f'<p><strong>{key}:</strong> {value}</p>\n'
     html_output += "                </div>\n"
     html_output += "            </li>\n"
@@ -101,10 +116,8 @@ html_output += """        </ul>
     </body>
 </html>"""
 
-# speichern
+# save html output
 with open("animals.html", "w") as f:
     f.write(html_output)
 
 print("✅ HTML wurde in animals.html gespeichert")
-
-# I accidentally skipped step 3 and already edited it in step 2.
