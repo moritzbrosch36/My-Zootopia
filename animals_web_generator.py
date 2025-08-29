@@ -5,7 +5,9 @@ def load_data(file_path):
     with open(file_path, "r") as handle:
         return json.load(handle)
 
+
 animal_data = load_data("animals_data.json")
+
 
 html_output = """<html>
     <head>
@@ -77,7 +79,7 @@ html_output = """<html>
         <ul class="cards">
 """
 
-# für jedes Tier eine "Karte" bauen
+# build a "card" for each animal
 for data in animal_data:
     info = {
         "Name": data.get("name"),
@@ -104,3 +106,5 @@ with open("animals.html", "w") as f:
     f.write(html_output)
 
 print("✅ HTML wurde in animals.html gespeichert")
+
+# I accidentally skipped step 3 and already edited it in step 2.
