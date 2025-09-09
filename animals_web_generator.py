@@ -10,7 +10,7 @@ def load_data(file_path):
     Returns:
         list[dict]: List of animal dictionaries.
     """
-    with open(file_path, "r") as handle:
+    with open(file_path, "r", encoding = "utf-8") as handle:
         return json.load(handle)
 
 
