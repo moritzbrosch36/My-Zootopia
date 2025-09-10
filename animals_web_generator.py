@@ -56,3 +56,30 @@ def generate_cards_html(animal_data):
         html_output += "  </div>\n</li>\n"
 
     return html_output
+
+
+if __name__ == "__main__":
+    """
+    Main entry point:
+      1. Load animal data from JSON file.
+      2. Generate HTML card markup.
+      3. Load the external HTML template.
+      4. Insert cards into the template at {{cards}} placeholder.
+      5. Save the final HTML to 'animals.html'.
+    """
+    # Load data
+    animal_data = load_data("../My-Zootopia/animals_data.json")
+    cards_html = generate_cards_html(animal_data)
+
+    # Load template
+    with open("animals_template.html", "r", encoding="utf-8") as f:
+        template = f.read()
+
+    # Replace placeholder with generated cards
+    final_html = template.replace("{{cards}}", cards_html)
+
+    # Save final HTML
+    with open("animals.html", "w", encoding="utf-8") as f:
+        f.write(final_html)
+
+    print("✅ HTML has been generated and saved to animals.html")
