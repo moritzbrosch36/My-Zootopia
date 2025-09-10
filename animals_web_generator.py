@@ -2,16 +2,24 @@ import json
 
 def load_data(file_path):
     """
-    Load a JSON file and return its data as a Python object.
+    Load a JSON file and return its contents as a Python object.
 
     Args:
         file_path (str): Path to the JSON file.
 
     Returns:
-        list[dict]: List of animal dictionaries.
+        list[dict]: Parsed JSON data as a list of dictionaries.
+                    Returns an empty list if the file is missing or invalid.
     """
-    with open(file_path, "r", encoding = "utf-8") as handle:
-        return json.load(handle)
+    try:
+        with open(file_path, "r", encoding="utf-8") as handle:
+            return json.load(handle)
+    except FileNotFoundError:
+        print(f"❌ Error: File '{file_path}' not found.")
+        return []
+    except json.JSONDecodeError:
+        print(f"❌ Error: File '{file_path}' is not valid JSON.")
+        return []
 
 
 # Main program
