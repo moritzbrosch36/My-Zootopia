@@ -22,110 +22,37 @@ def load_data(file_path):
         return []
 
 
-# Main program
-"""
-Load animal data from 'animals_data.json', generate an HTML card 
-(<li class="cards__item">) for each animal, and save the complete HTML 
-page to 'animals.html'. Each card includes Name, Diet, Type, and Locations
-(if available).
-"""
-animal_data = load_data("animals_data.json")
+def generate_cards_html(animal_data):
+    """
+    Generate HTML markup for a list of animal cards.
 
+    Each card contains:
+      - Name (as the card title)
+      - Diet
+      - Locations
+      - Type
 
-html_output = """<html>
-    <head>
-        <style>
-        @gray-darker:               #444444;
-        @gray-dark:                 #696969;
-        @gray:                      #999999;
-        @gray-light:                #cccccc;
-        @gray-lighter:              #ececec;
-        @gray-lightest:             lighten(@gray-lighter,4%);
+    Args:
+        animal_data (list[dict]): List of animal dictionaries.
 
-        html {
-          background-color: #ffe9e9;
+    Returns:
+        str: HTML string with <li> elements for all animals.
+    """
+    html_output = ""
+    for data in animal_data:
+        info = {
+            "Name": data.get("name"),
+            "Diet": data.get("characteristics", {}).get("diet"),
+            "Locations": ", ".join(data.get("locations", [])) if data.get("locations") else None,
+            "Type": data.get("characteristics", {}).get("type")
         }
 
-        h1 {
-            text-align: center;
-            font-size: 40pt;
-            font-weight: normal;
-        }
+        html_output += '<li class="cards__item">\n'
+        html_output += f'  <h2 class="card__title">{info["Name"]}</h2>\n'
+        html_output += '  <div class="card__text">\n'
+        for key, value in info.items():
+            if key != "Name" and value is not None:
+                html_output += f'    <p><strong>{key}:</strong> {value}</p>\n'
+        html_output += "  </div>\n</li>\n"
 
-        body {
-          font-family: 'Roboto','Helvetica Neue', Helvetica, Arial, sans-serif;
-          font-style: normal;
-          font-weight: 400;
-          letter-spacing: 0;
-          padding: 1rem;
-          text-rendering: optimizeLegibility;
-          -webkit-font-smoothing: antialiased;
-          -moz-osx-font-smoothing: grayscale;
-          -moz-font-feature-settings: "liga" on;
-          width: 900px;
-          margin: auto;
-        }
-
-        .cards {
-          list-style: none;
-          margin: 0;
-          padding: 0;
-        }
-
-        .cards__item {
-          background-color: white;
-          border-radius: 0.25rem;
-          box-shadow: 0 20px 40px -14px rgba(0,0,0,0.25);
-          overflow: hidden;
-          padding: 1rem;
-          margin: 50px;
-        }
-
-        .card__title {
-          color: @gray-dark;
-          font-size: 1.25rem;
-          font-weight: 300;
-          letter-spacing: 2px;
-          text-transform: uppercase;
-        }
-
-        .card__text {
-          flex: 1 1 auto;
-          font-size: 0.95rem;
-          line-height: 2;
-          margin-bottom: 1.25rem;
-        }
-        </style>
-    </head>
-    <body>
-        <h1>My Animal Repository</h1>
-        <ul class="cards">
-"""
-
-# build a "card" for each animal
-for data in animal_data:
-    info = {
-        "Name": data.get("name"),
-        "Diet": data.get("characteristics", {}).get("diet"),
-        "Type": data.get("characteristics", {}).get("type"),
-        "Locations": ", ".join(data.get("locations", [])) if data.get("locations") else None
-    }
-
-    html_output += '<li class="cards__item">\n'
-    html_output += f'<h2 class="card__title">{info["Name"]}</h2>\n'
-    html_output += '<div class="card__text">\n'
-    for key, value in info.items():
-        if key != "Name" and value is not None:
-            html_output += f'<p><strong>{key}:</strong> {value}</p>\n'
-    html_output += "                </div>\n"
-    html_output += "            </li>\n"
-
-html_output += """        </ul>
-    </body>
-</html>"""
-
-# save html output
-with open("animals.html", "w") as f:
-    f.write(html_output)
-
-print("✅ HTML wurde in animals.html gespeichert")
+    return html_output
